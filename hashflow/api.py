@@ -1,8 +1,8 @@
 from requests import Session
-from lib.exceptions import InvalidUsage
+from helpers.exceptions import InvalidUsage
 import os
-from lib.validation import *
-from lib.common import RfqType
+from helpers.validation import *
+from helpers.common import RfqType
 
 
 class HashflowApi:
