@@ -1,6 +1,6 @@
 [project]
-name = "hashflow-py"
-version = "0.1.0"
+name = "hashflow"
+version = "0.1.3"
 authors = [
   { name="Sameer Brenn", email="sameer@hashflow.com" },
   { name="Hashflow Foundation" },
@@ -10,14 +10,13 @@ readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: ISC License",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = ["requests"]
 
 [project.urls]
 "Homepage" = "https://github.com/hashflownetwork/taker-py"
 
 [build.system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

@@ -1,5 +1,5 @@
-from helpers.chains import CHAIN_IDS
-from helpers.exceptions import InvalidUsage
+from .chains import CHAIN_IDS
+from .exceptions import InvalidUsage
 import re
 
 
