@@ -6,8 +6,6 @@ from .helpers.common import RfqType
 
 
 class HashflowApi:
-    # session = Session()
-
     def __init__(self, auth_key, name, mode, environment="production"):
         self.headers = {"Authorization": auth_key}
         if environment == "production":
