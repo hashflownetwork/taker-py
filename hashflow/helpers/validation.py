@@ -22,6 +22,6 @@ def validate_number_string(number):
     if not number or len(number) <= 0:
         raise InvalidUsage(f"Invalid number string {number}")
 
-    for i in range(0, len(number)):
-        if number[i] < "0" or number[i] > "9":
-            raise InvalidUsage(f"Invalid char {number[i]} in string {number}")
+    for n in number:
+        if n < "0" or n > "9":
+            raise InvalidUsage(f"Invalid char {n} in string {number}")
