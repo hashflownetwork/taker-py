@@ -1,8 +1,8 @@
 from requests import Session
-from exceptions import InvalidUsage
+from lib.exceptions import InvalidUsage
 import os
-from validation import *
-from common import RfqType
+from lib.validation import *
+from lib.common import RfqType
 
 
 class HashflowApi:
@@ -107,7 +107,9 @@ class HashflowApi:
             "feesBps": feeBps,
             "debug": debug,
         }
-        r = self.session.post(f"{self.host}/taker/v2/rfq", json=data, headers=self.headers)
+        r = self.session.post(
+            f"{self.host}/taker/v2/rfq", json=data, headers=self.headers
+        )
         r.raise_for_status()
         return r.json()
 
@@ -121,12 +123,14 @@ if __name__ == "__main__":
     levels = api.get_price_levels(1, ["mm4", "mm5"])
     print(levels)
     wallet = os.environ["HASHFLOW_TEST_WALLET"]
-    quote = api.request_quote(chain_id=1,
-                              base_token='0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
-                              quote_token='0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                              quote_token_amount='18994364991',
-                              wallet=wallet,
-                              market_makers=['mm5', 'mm4'],
-                              feeBps=2,
-                              debug=True)
+    quote = api.request_quote(
+        chain_id=1,
+        base_token="0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+        quote_token="0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        quote_token_amount="18994364991",
+        wallet=wallet,
+        market_makers=["mm5", "mm4"],
+        feeBps=2,
+        debug=True,
+    )
     print(quote)

@@ -3,6 +3,7 @@ name = "hashflow-py"
 version = "0.1.0"
 authors = [
   { name="Sameer Brenn", email="sameer@hashflow.com" },
+  { name="Hashflow Foundation" },
 ]
 description = "An implementation of the Hashflow REST API"
 readme = "README.md"
