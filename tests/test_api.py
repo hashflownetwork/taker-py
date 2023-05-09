@@ -27,7 +27,7 @@ class TestWallet:
         result = self.api.get_market_makers(
             TEST_CHAIN_ID, market_maker=TEST_MARKET_MAKERS_LIST
         )
-        assert result == ["mm4", "mm5"]
+        assert result == TEST_MARKET_MAKERS_LIST
         assert patched.call_args_list == [
             mocker.call(
                 "https://api.hashflow.com/taker/v1/marketMakers",
@@ -103,7 +103,7 @@ class TestTaker:
         result = self.api.get_market_makers(
             TEST_CHAIN_ID, market_maker=TEST_MARKET_MAKERS_LIST
         )
-        assert result == ["mm4", "mm5"]
+        assert result == TEST_MARKET_MAKERS_LIST
         assert patched.call_args_list == [
             mocker.call(
                 "https://api.hashflow.com/taker/v1/marketMakers",
