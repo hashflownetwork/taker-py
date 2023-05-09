@@ -2,6 +2,7 @@ from requests import Session
 from exceptions import InvalidUsage
 import os
 from validation import *
+from common import RfqType
 
 
 class HashflowApi:
@@ -92,7 +93,7 @@ class HashflowApi:
             validate_evm_address(effective_trader)
 
         data = {
-            "rfqType": "3",  # fix
+            "rfqType": RfqType.RFQT.value,
             "source": self.source,
             "trader": trader,
             "networkId": chain_id,
@@ -106,17 +107,41 @@ class HashflowApi:
             "feesBps": feeBps,
             "debug": debug,
         }
-
-        r = self.session.post(f"{self.host}/taker/v2/rfq", data=data)
+        r = self.session.post(f"{self.host}/taker/v2/rfq", json=data, headers=self.headers)
         r.raise_for_status()
         return r.json()
 
+def pretty_print_POST(req):
+    """
+    At this point it is completely built and ready
+    to be fired; it is "prepared".
+
+    However pay attention at the formatting used in 
+    this function because it is programmed to be pretty 
+    printed and may differ from the actual request.
+    """
+    print('{}\n{}\r\n{}\r\n\r\n{}'.format(
+        '-----------START-----------',
+        req.method + ' ' + req.url,
+        '\r\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
+        req.body,
+    ))
 
 if __name__ == "__main__":
     api = HashflowApi(
         os.environ["HASHFLOW_AUTHORIZATION_KEY"], "qa", "taker", "production"
     )
-    makers = api.get_market_makers(1)
-    print(makers)
-    levels = api.get_price_levels(1, ["mm4", "mm5"])
-    print(levels)
+    # makers = api.get_market_makers(1)
+    # print(makers)
+    # levels = api.get_price_levels(1, ["mm4", "mm5"])
+    # print(levels)
+    wallet = os.environ["HASHFLOW_TEST_WALLET"]
+    quote = api.request_quote(chain_id=1,
+                              base_token='0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+                              quote_token='0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+                              quote_token_amount='18994364991',
+                              wallet=wallet,
+                              market_makers=['mm5', 'mm4'],
+                              feeBps=2,
+                              debug=True)
+    print(quote)

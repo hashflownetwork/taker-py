@@ -1,6 +1,6 @@
 [project]
 name = "hashflow-py"
-version = "0.0.1"
+version = "0.1.0"
 authors = [
   { name="Sameer Brenn", email="sameer@hashflow.com" },
 ]
