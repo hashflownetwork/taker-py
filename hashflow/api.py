@@ -1,4 +1,4 @@
-from requests import Session
+import requests
 from .helpers.exceptions import InvalidUsage
 import os
 from .helpers.validation import *
@@ -6,7 +6,7 @@ from .helpers.common import RfqType
 
 
 class HashflowApi:
-    session = Session()
+    # session = Session()
 
     def __init__(self, auth_key, name, mode, environment="production"):
         self.headers = {"Authorization": auth_key}
@@ -37,7 +37,7 @@ class HashflowApi:
         if market_maker is not None:
             params["marketMaker"] = market_maker
 
-        r = self.session.get(
+        r = requests.get(
             f"{self.host}/taker/v1/marketMakers", headers=self.headers, params=params
         )
         r.raise_for_status()
@@ -53,7 +53,7 @@ class HashflowApi:
         if self.wallet is not None:
             params["wallet"] = self.wallet
 
-        r = self.session.get(
+        r = requests.get(
             f"{self.host}/taker/v2/price-levels", headers=self.headers, params=params
         )
         r.raise_for_status()
@@ -107,9 +107,7 @@ class HashflowApi:
             "feesBps": feeBps,
             "debug": debug,
         }
-        r = self.session.post(
-            f"{self.host}/taker/v2/rfq", json=data, headers=self.headers
-        )
+        r = requests.post(f"{self.host}/taker/v2/rfq", json=data, headers=self.headers)
         r.raise_for_status()
         return r.json()
 
