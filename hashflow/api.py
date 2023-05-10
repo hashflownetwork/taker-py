@@ -6,7 +6,7 @@ from .helpers.common import RfqType
 
 
 class HashflowApi:
-    def __init__(self, auth_key, name, mode, environment="production"):
+    def __init__(self, mode, name, auth_key, environment="production"):
         self.headers = {"Authorization": auth_key}
         if environment == "production":
             self.host = "https://api.hashflow.com"
@@ -112,7 +112,10 @@ class HashflowApi:
 
 if __name__ == "__main__":
     api = HashflowApi(
-        os.environ["HASHFLOW_AUTHORIZATION_KEY"], "qa", "taker", "production"
+        mode="taker",
+        name="qa",
+        auth_key=os.environ["HASHFLOW_AUTHORIZATION_KEY"],
+        environment="production",
     )
     makers = api.get_market_makers(1)
     print(makers)

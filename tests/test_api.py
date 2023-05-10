@@ -19,7 +19,7 @@ def create_response(mocker, json_body):
 
 
 class TestWallet:
-    api = HashflowApi(TEST_AUTH_KEY, TEST_WALLET_ADDRESS, "wallet")
+    api = HashflowApi(mode="wallet", name=TEST_WALLET_ADDRESS, auth_key=TEST_AUTH_KEY)
 
     def test_get_market_makers(self, mocker):
         response = create_response(mocker, {"marketMakers": TEST_MARKET_MAKERS_LIST})
@@ -95,7 +95,7 @@ class TestWallet:
 
 
 class TestTaker:
-    api = HashflowApi(TEST_AUTH_KEY, "test_taker_client", "taker")
+    api = HashflowApi(mode="taker", name="test_taker_client", auth_key=TEST_AUTH_KEY)
 
     def test_get_market_makers(self, mocker):
         response = create_response(mocker, {"marketMakers": TEST_MARKET_MAKERS_LIST})
