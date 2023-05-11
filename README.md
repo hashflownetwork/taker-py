@@ -3,11 +3,23 @@ Python Hashflow Taker API
 
 Uses the `requests` python library.
 
+Setup
+-----
+```sh
+pip install -r requirements.txt
+```
+
 Running basic test
 ------------------
 
 ```sh
 python -m hashflow.api
+```
+
+Running unit tests
+------------------
+```sh
+pytest
 ```
 
 Building Instructions
