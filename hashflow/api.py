@@ -1,4 +1,3 @@
-import requests
 from .helpers.exceptions import InvalidUsage
 import os
 from .helpers.validation import *

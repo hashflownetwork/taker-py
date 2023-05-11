@@ -1,4 +1,3 @@
-import asyncio
 from hashflow.api import HashflowApi
 import pytest
 import aiohttp
