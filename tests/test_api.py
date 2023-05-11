@@ -21,7 +21,7 @@ def create_response(mocker, json_body):
     return response
 
 
-# TODO(ENG-XXX): Replace the async with in every test with a fixture
+# TODO(ENG-1141): Replace the async with in every test with a fixture
 class TestWallet:
     @pytest.mark.asyncio
     async def test_get_market_makers(self, mocker):
