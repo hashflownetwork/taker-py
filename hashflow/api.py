@@ -1,8 +1,8 @@
-import requests
 from .helpers.exceptions import InvalidUsage
 import os
 from .helpers.validation import *
 from .helpers.common import RfqType
+import aiohttp
 
 
 class HashflowApi:
@@ -23,8 +23,15 @@ class HashflowApi:
             self.wallet = None
         else:
             raise InvalidUsage(f"Invalid value {mode} for mode")
+    
+    async def __aenter__(self):
+        self.session = aiohttp.ClientSession()
+        return self
 
-    def get_market_makers(self, chain_id, wallet=None, market_maker=None):
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.session.close()
+
+    async def get_market_makers(self, chain_id, wallet=None, market_maker=None):
         validate_chain_id(chain_id)
         params = {
             "source": self.source,
@@ -35,13 +42,13 @@ class HashflowApi:
         if market_maker is not None:
             params["marketMaker"] = market_maker
 
-        r = requests.get(
-            f"{self.host}/taker/v1/marketMakers", headers=self.headers, params=params
-        )
-        r.raise_for_status()
-        return r.json()["marketMakers"]
 
-    def get_price_levels(self, chain_id, market_makers):
+        async with self.session.get(f"{self.host}/taker/v1/marketMakers", headers=self.headers, params=params) as r:
+            r.raise_for_status()
+            json = await r.json()
+            return json["marketMakers"]
+
+    async def get_price_levels(self, chain_id, market_makers):
         validate_chain_id(chain_id)
         params = {
             "source": self.source,
@@ -51,13 +58,12 @@ class HashflowApi:
         if self.wallet is not None:
             params["wallet"] = self.wallet
 
-        r = requests.get(
-            f"{self.host}/taker/v2/price-levels", headers=self.headers, params=params
-        )
-        r.raise_for_status()
-        return r.json()["levels"]
+        async with self.session.get(f"{self.host}/taker/v2/price-levels", headers=self.headers, params=params) as r:
+            r.raise_for_status()
+            json = await r.json()
+            return json["levels"]
 
-    def request_quote(
+    async def request_quote(
         self,
         chain_id,
         base_token,
@@ -105,31 +111,35 @@ class HashflowApi:
             "feesBps": feeBps,
             "debug": debug,
         }
-        r = requests.post(f"{self.host}/taker/v2/rfq", json=data, headers=self.headers)
-        r.raise_for_status()
-        return r.json()
+        async with self.session.post(f"{self.host}/taker/v2/rfq", json=data, headers=self.headers) as r:
+            r.raise_for_status()
+            return await r.json()
 
 
 if __name__ == "__main__":
-    api = HashflowApi(
-        mode="taker",
-        name="qa",
-        auth_key=os.environ["HASHFLOW_AUTHORIZATION_KEY"],
-        environment="production",
-    )
-    makers = api.get_market_makers(1)
-    print(makers)
-    levels = api.get_price_levels(1, ["mm4", "mm5"])
-    print(levels)
-    wallet = os.environ["HASHFLOW_TEST_WALLET"]
-    quote = api.request_quote(
-        chain_id=1,
-        base_token="0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
-        quote_token="0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-        quote_token_amount="18994364991",
-        wallet=wallet,
-        market_makers=["mm5", "mm4"],
-        feeBps=2,
-        debug=True,
-    )
-    print(quote)
+    import asyncio
+
+    async def main():
+        async with HashflowApi(
+            mode="taker",
+            name="qa",
+            auth_key=os.environ["HASHFLOW_AUTHORIZATION_KEY"],
+            environment="production",
+        ) as api:
+            makers = await api.get_market_makers(1, market_maker="mm5")
+            print(makers)
+            levels = await api.get_price_levels(1, ["mm4", "mm5"])
+            print(levels)
+            wallet = os.environ["HASHFLOW_TEST_WALLET"]
+            quote = await api.request_quote(
+                chain_id=1,
+                base_token="0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+                quote_token="0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                quote_token_amount="18364991",
+                wallet=wallet,
+                market_makers=["mm5", "mm4"],
+                feeBps=2,
+                debug=True,
+            )
+            print(quote)
+    asyncio.run(main())
