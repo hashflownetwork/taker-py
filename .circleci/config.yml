@@ -12,7 +12,7 @@ jobs:
             sudo apt install -y python3-pip
             sudo pip install pipenv
             pipenv install -r requirements.txt
-            python3 -m build
+            pipenv run python3 -m build
             pipenv install dist/*.whl
             pipenv install pytest
       - run:
@@ -30,8 +30,8 @@ jobs:
             sudo apt install -y python3-pip
             sudo pip install pipenv
             pipenv install -r requirements.txt
-            python3 -m build
-            python3 -m pip install --upgrade twine
+            pipenv run python3 -m build
+            pipenv install --upgrade twine
             pipenv run twine upload dist/*
 workflows:
   build_test_publish:
