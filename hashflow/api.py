@@ -53,7 +53,7 @@ class HashflowApi:
         params = {
             "source": self.source,
             "networkId": chain_id,
-            "marketMakers": market_makers,
+            "marketMakers[]": market_makers,
         }
         if self.wallet is not None:
             params["wallet"] = self.wallet

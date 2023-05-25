@@ -58,7 +58,7 @@ class TestWallet:
                     params={
                         "source": "api",
                         "networkId": TEST_CHAIN_ID,
-                        "marketMakers": TEST_MARKET_MAKERS_LIST,
+                        "marketMakers[]": TEST_MARKET_MAKERS_LIST,
                         "wallet": TEST_WALLET_ADDRESS,
                     },
                 )
@@ -138,7 +138,7 @@ class TestTaker:
                     params={
                         "source": "test_taker_client",
                         "networkId": TEST_CHAIN_ID,
-                        "marketMakers": TEST_MARKET_MAKERS_LIST,
+                        "marketMakers[]": TEST_MARKET_MAKERS_LIST,
                     },
                 )
             ]
