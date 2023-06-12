@@ -1,11 +1,12 @@
 [project]
-name = "hashflow"
-version = "0.2.0"
+name = "hashflow-taker-sdk"
+version = "1.0.0"
 authors = [
-  { name="Sameer Brenn", email="sameer@hashflow.com" },
   { name="Hashflow Foundation" },
+  { name="Sameer Brenn", email="sameer@hashflow.com" },
+  { name="Victor Ionescu", email="victor@hashflow.com" }
 ]
-description = "An implementation of the Hashflow REST API"
+description = "Python SDK to interact with the Hashflow Taker API"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
